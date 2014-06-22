@@ -30,7 +30,7 @@ Example output:
     | sda | sdb | sdc |     |
     |     |     | sdd |     |
 
-Customisation
+Customization
 -------------
 
 The output is based on my 24 bay drive chassis that has
