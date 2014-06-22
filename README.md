@@ -1,11 +1,14 @@
 lsidrivemap
 ===========
 
-I have a 24-disk drive enclosure. This tool is to determine
-which disk (sda/sdb/etc) is in which drive slot. It also 
-shows the drive temperature of each slot.
 
-It requires an argument of 'temp' or 'disk'. 
+Owners of a IBM M1015 / LSI 9220-8i controller can use this utiliy to map
+controller ports to drives. 
+
+I have a 24 bay disk chassis and use it to create a physical map of which 
+drive is in which slot. 
+
+The tool can also show the temperature of the drive.
 
 Example output:
 
@@ -26,6 +29,13 @@ Example output:
     | sdf | sdg | sdj | sdk |
     | sda | sdb | sdc |     |
     |     |     | sdd |     |
+
+Customisation
+=============
+
+The output is based on my 24 bay drive chassis that has
+six rows of four drives. You may need to customise the
+'print_controller' function to suit your own needs. 
 
 Requirements
 ============
