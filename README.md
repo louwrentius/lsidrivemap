@@ -31,14 +31,21 @@ Example output:
     |     |     | sdd |     |
 
 Customisation
-=============
+-------------
 
 The output is based on my 24 bay drive chassis that has
 six rows of four drives. You may need to customise the
 'print_controller' function to suit your own needs. 
 
+Known Issues
+------------
+The script reads the WWN serial from the drive and uses
+it to find the drive name in /dev/disk/by-id. If the megacli
+command does not return a WWN, which happens on older WD drives
+for me, no data is returned.
+
 Requirements
-============
+------------
 - The script requires Python 2.7 or higher.
 - LSI command line utility megacli or megacli64 (google for a download)
 - put the /opt/MegaRAID/MegaCli/ directory in your path and either create
