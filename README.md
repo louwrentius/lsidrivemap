@@ -6,7 +6,8 @@ Owners of an IBM M1015 / LSI 9220-8i SAS controller can use this utiliy to map
 controller ports to drives. This helps you identify which slot is occuplied by
 which drive. 
 
-This is the chassis I tested with and below is the output of the tool.
+This is the chassis I tested with and below is the output of the tool. Notice
+that the drive lights matches the output.
 
 ![24 bay chassis][chassis]
 
