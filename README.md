@@ -5,6 +5,8 @@ I have a 24-disk drive enclosure. This tool is to determine
 which disk (sda/sdb/etc) is in which drive slot. It also 
 shows the drive temperature of each slot.
 
+It requires an argument of 'temp' or 'disk'. 
+
 Example output:
 
     root@nano:/usr/src# ./lsidrivemap temp
@@ -24,5 +26,11 @@ Example output:
     | sdf | sdg | sdj | sdk |
     | sda | sdb | sdc |     |
     |     |     | sdd |     |
+
+Requirements
+============
+- LSI command line utility megacli or megacli64 (google for a download)
+- put the /opt/MegaRAID/MegaCli/ directory in your path and either create
+a symbolic link to MegaCli or MegaCli64 with the name of 'megacli in that folder.
 
 
