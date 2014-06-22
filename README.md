@@ -42,6 +42,17 @@ The output is based on my 24 bay drive chassis that has
 six rows of four drives. You may need to customise the
 'print_controller' function to suit your own needs. 
 
+I have three controllers. Ports number from 0 to 7. 
+Each controller manages two rows of four drives. Controller 0 manages
+the bottom two rows, controller 1 manages the middle two rows and 
+controller 2, as you may expect, manages the top two rows.
+
+Regarding the set of two rows managed by a controller: port zero is 
+the upper-right corner, port 7 is the lower left corner. 
+
+For example, in the output above you may notice that on controller
+0 and 2, port 0 is not used.
+
 ### Known Issues
 
 The script reads the WWN serial from the drive and uses
