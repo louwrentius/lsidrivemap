@@ -10,7 +10,7 @@ portspercontroller = 8
 datatype = sys.argv[1]
 
 def number_of_controllers():
-    rawdata = subprocess.Popen(['megacli','-cfgdsply','-aALL'],\
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli','-cfgdsply','-aALL'],\
          stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
     regex = re.compile('Adapter:.*')
     match = regex.findall(rawdata)
@@ -18,7 +18,7 @@ def number_of_controllers():
     
 
 def get_drive_wwn( controller, port ):
-    rawdata = subprocess.Popen(['megacli','-pdinfo', '-physdrv',\
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli','-pdinfo', '-physdrv',\
         '[64:' + str(port) + ']', '-a' + str(controller)],\
          stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     regex = re.compile('WWN: (.*)')                                            
@@ -48,7 +48,7 @@ def convert_wwn_to_drivename(wwn,diskbyid):
 
 def get_drive_temp(controller, port):
 
-    rawdata =  subprocess.Popen(['megacli',  '-pdinfo', '-physdrv', '[64:' +\
+    rawdata =  subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli',  '-pdinfo', '-physdrv', '[64:' +\
                str(port) +']', '-a' + str(controller)],\
                stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0] 
 
@@ -81,6 +81,8 @@ def get_drive_info(controller, port, datatype):
         return get_drive_name(controller, port)
     if datatype == "temp":
         return get_drive_temp(controller, port)
+    if datatype == "wwn":
+        return get_drive_wwn(controller, port)
 
 def fetch_data(datatype):
 
