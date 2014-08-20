@@ -8,6 +8,11 @@ controller ports to drives.
 I have a 24 bay disk chassis and use it to create a physical map of which 
 drive is in which slot. 
 
+![nas][nas]
+
+[nas]: http://louwrentius.com/static/images/zfsnas01.jpg
+
+
 The tool can also show the temperature of the drive.
 
 Example output:
