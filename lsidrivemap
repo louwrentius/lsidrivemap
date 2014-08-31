@@ -11,17 +11,19 @@ datatype = sys.argv[1]
 
 
 def number_of_controllers():
-    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-cfgdsply', '-aALL'],\
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-cfgdsply',
+                               '-aALL'], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()[0]
     regex = re.compile('Adapter:.*')
     match = regex.findall(rawdata)
     return len(match)
 
 
 def get_drive_wwn(controller, port):
-    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo', '-physdrv',\
-                               '[64:' + str(port) + ']', '-a' + str(controller)],\
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo',
+                               '-physdrv', '[64:' + str(port) + ']',
+                               '-a' + str(controller)], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()
     regex = re.compile('WWN: (.*)')
     match = regex.search(rawdata[0])
     try:
@@ -50,9 +52,10 @@ def convert_wwn_to_drivename(wwn, diskbyid):
 
 def get_drive_temp(controller, port):
 
-    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo', '-physdrv', '[64:' +\
-                               str(port) + ']', '-a' + str(controller)],\
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo',
+                               '-physdrv', '[64:' + str(port) + ']',
+                               '-a' + str(controller)], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()[0]
 
     regex = re.compile('Drive Temperature :(.*)')
     match = regex.search(rawdata)
@@ -92,7 +95,7 @@ def get_drive_info(controller, port, datatype):
 def fetch_data(datatype):
 
     drivearray =\
-        [[0 for x in xrange(portspercontroller)]\
+        [[0 for x in xrange(portspercontroller)]
             for x in xrange(controllercount)]
 
     for x in xrange(controllercount):
@@ -123,8 +126,10 @@ def print_controller(controller, array):
     c = array[controller]
     top = [c[3], c[2], c[1], c[0]]
     bottom = [c[7], c[6], c[5], c[4]]
-    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(*top, width=width)
-    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(*bottom, width=width)
+    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(
+        *top, width=width)
+    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(
+        *bottom, width=width)
 
 
 if __name__ == "__main__":
