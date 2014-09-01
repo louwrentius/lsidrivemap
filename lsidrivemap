@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import os
 import sys
 import subprocess
 import re
@@ -9,33 +8,37 @@ portspercontroller = 8
 
 datatype = sys.argv[1]
 
+
 def number_of_controllers():
-    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli','-cfgdsply','-aALL'],\
-         stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-cfgdsply',
+                               '-aALL'], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()[0]
     regex = re.compile('Adapter:.*')
     match = regex.findall(rawdata)
     return len(match)
-    
 
-def get_drive_wwn( controller, port ):
-    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli','-pdinfo', '-physdrv',\
-        '[64:' + str(port) + ']', '-a' + str(controller)],\
-         stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-    regex = re.compile('WWN: (.*)')                                            
-    match = regex.search(rawdata[0])                                              
+
+def get_drive_wwn(controller, port):
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo',
+                               '-physdrv', '[64:' + str(port) + ']',
+                               '-a' + str(controller)], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()
+    regex = re.compile('WWN: (.*)')
+    match = regex.search(rawdata[0])
     try:
         return match.group(1)
     except(AttributeError):
         return ""
 
-def get_all_disk_by_id():                                                        
-    disk_by_id_data = subprocess.Popen(['ls',  '-alh',  '/dev/disk/by-id'],     
-                                       stdout=subprocess.PIPE,                  
-                                       stderr=subprocess.PIPE).communicate()[0] 
-    return disk_by_id_data      
+
+def get_all_disk_by_id():
+    disk_by_id_data = subprocess.Popen(['ls', '-alh', '/dev/disk/by-id'],
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE).communicate()[0]
+    return disk_by_id_data
 
 
-def convert_wwn_to_drivename(wwn,diskbyid):
+def convert_wwn_to_drivename(wwn, diskbyid):
     regex = re.compile(wwn + '(.*)')
     match = regex.search(diskbyid)
     try:
@@ -48,33 +51,36 @@ def convert_wwn_to_drivename(wwn,diskbyid):
 
 def get_drive_temp(controller, port):
 
-    rawdata =  subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli',  '-pdinfo', '-physdrv', '[64:' +\
-               str(port) +']', '-a' + str(controller)],\
-               stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0] 
+    rawdata = subprocess.Popen(['/opt/MegaRAID/MegaCli/megacli', '-pdinfo',
+                               '-physdrv', '[64:' + str(port) + ']',
+                               '-a' + str(controller)], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE).communicate()[0]
 
     regex = re.compile('Drive Temperature :(.*)')
     match = regex.search(rawdata)
     try:
         temp = match.group(1).split("C")[0]
 
-        # 
+        #
         # Ugly hack: issue with some old WD drives
         # Controller reports 65C for them.
-        # 
+        #
         if int(temp) >= 60:
             temp = "?"
         return temp
-        
+
     except(AttributeError):
         return ""
     except(IndexError):
         return ""
 
+
 def get_drive_name(controller, port):
     wwn = get_drive_wwn(controller, port)
-    diskbyid  = get_all_disk_by_id()
-    drivename = convert_wwn_to_drivename(wwn,diskbyid)
+    diskbyid = get_all_disk_by_id()
+    drivename = convert_wwn_to_drivename(wwn, diskbyid)
     return drivename
+
 
 def get_drive_info(controller, port, datatype):
     if datatype == "disk":
@@ -84,20 +90,21 @@ def get_drive_info(controller, port, datatype):
     if datatype == "wwn":
         return get_drive_wwn(controller, port)
 
+
 def fetch_data(datatype):
 
     drivearray =\
-         [[ 0 for x in xrange(portspercontroller)]\
+        [[0 for x in xrange(portspercontroller)]
             for x in xrange(controllercount)]
-        
+
     for x in xrange(controllercount):
         for y in xrange(portspercontroller):
-           disk = get_drive_info(x,y,datatype)
-           if len(disk) == 0:
+            disk = get_drive_info(x, y, datatype)
+            if len(disk) == 0:
                 disk = ""
-           drivearray[x][y] = disk
-           #temp = get_drive_temp(x,y)
-           #print str(x) + " " + str(y) + "Temp: " + str(temp) 
+            drivearray[x][y] = disk
+            #temp = get_drive_temp(x,y)
+            #print str(x) + " " + str(y) + "Temp: " + str(temp)
 
     return drivearray
 
@@ -111,14 +118,17 @@ def get_largest_width(array):
                 width = size
     return width
 
+
 def print_controller(controller, array):
-    
+
     width = str(get_largest_width(array))
     c = array[controller]
-    top = [c[3],c[2],c[1],c[0]]
+    top = [c[3], c[2], c[1], c[0]]
     bottom = [c[7], c[6], c[5], c[4]]
-    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(*top, width=width)
-    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(*bottom, width=width)
+    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(
+        *top, width=width)
+    print "| {:^{width}} | {:^{width}} | {:^{width}} | {:^{width}} |".format(
+        *bottom, width=width)
 
 
 if __name__ == "__main__":
@@ -128,6 +138,5 @@ if __name__ == "__main__":
 
     print
     for x in reversed(xrange(controllercount)):
-        print_controller(x,data)
+        print_controller(x, data)
     print
-    
