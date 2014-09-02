@@ -65,6 +65,6 @@ Requirements
 - The script requires Python 2.7 or higher.
 - LSI command line utility megacli or megacli64 (google for a download)
 - put the /opt/MegaRAID/MegaCli/ directory in your path and either create
-a symbolic link to MegaCli or MegaCli64 with the name of 'megacli in that folder.
+a symbolic link to MegaCli or MegaCli64 with the name of 'megacli' in that folder.
 
 
