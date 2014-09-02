@@ -2,7 +2,7 @@ lsidrivemap
 ===========
 
 
-Owners of a IBM M1015 / LSI 9220-8i controller can use this utiliy to map
+Owners of a IBM M1015 / LSI 9220-8i controller can use this utility to map
 controller ports to drives. 
 
 I have a 24 bay disk chassis and use it to create a physical map of which 
