@@ -2,7 +2,7 @@ lsidrivemap
 ===========
 
 
-Owners of a IBM M1015 / LSI 9220-8i controller can use this utiliy to map
+Owners of a IBM M1015 / LSI 9220-8i controller can use this utility to map
 controller ports to drives. 
 
 I have a 24 bay disk chassis and use it to create a physical map of which 
@@ -65,6 +65,6 @@ Requirements
 - The script requires Python 2.7 or higher.
 - LSI command line utility megacli or megacli64 (google for a download)
 - put the /opt/MegaRAID/MegaCli/ directory in your path and either create
-a symbolic link to MegaCli or MegaCli64 with the name of 'megacli in that folder.
+a symbolic link to MegaCli or MegaCli64 with the name of 'megacli' in that folder.
 
 
